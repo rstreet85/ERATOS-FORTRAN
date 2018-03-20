@@ -19,7 +19,10 @@ program eratos
     read *, lim
   endif
 
-  if (argc>1 .and. (argv=='-v')) verbose=.true.
+  if (argc>1) then
+    call get_command_argument(2,argv)
+    if (argv=='-v') verbose=.true.
+  endif
 
   primes = eratos_primes(lim)
 

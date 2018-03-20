@@ -1,7 +1,15 @@
 # Sieve of Eratosthenes
-**Updated 09-16-2017**
+**Updated 03-20-2018**
 
-The Sieve of Eratosthenes algorithm implemented in free-form Fortran 95. Finds all primes below input `n`, returns largest prime as output. [More information.](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
+The Sieve of Eratosthenes algorithm implemented in Fortran 2003+ style. 
+Finds all primes below input `n`, returns largest prime as output. 
+[More information.](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
 
-Input: `1000`
-Output: `997`
+    ./eratos 1000
+
+> 997
+
+
+This method is known to be memory and speed
+[deficient](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes#Algorithmic_complexity) 
+for large prime numbers.
