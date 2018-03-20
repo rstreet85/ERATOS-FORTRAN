@@ -34,7 +34,8 @@ pure function eratos_primes(lim)
   integer,allocatable :: eratos_primes(:)
 
   integer :: mid,mult,i,j            !utility counters/placeholders
-  logical :: primes(lim)    !array of booleans representing integers 0-limit
+  ! logical(1) gives ~ 4x memory savings and 40% speedup (gfortran: -O0 and -O3)
+  logical(1) :: primes(lim)    !array of booleans representing integers 0-limit
 
   primes(:) = .true.
   mid = lim / 2
@@ -53,6 +54,7 @@ pure function eratos_primes(lim)
   ! collect output
   allocate(eratos_primes(count(primes)))
 
+! iterable way saves memory over one-liner pack() for large prime cases
   j = 1
   do concurrent (i=1:lim)
     if (primes(i))  then
@@ -60,7 +62,6 @@ pure function eratos_primes(lim)
       j = j+1
     endif
   enddo
-
 
 
 end function eratos_primes
