@@ -7,11 +7,11 @@ FCFLAGS = -g3 -fcheck=all -fbacktrace -Wall -Wextra -Wpedantic -Warray-bounds
 #Optimization flags
 #FCFLAGS += -O3
 
-ERATOS: Eratos.o
+eratos: Eratos.o
 	$(FC) $(FCFLAGS) -o $@ $^
 Eratos.o: Eratos.f90
 	$(FC) $(FCFLAGS) -c $^
 
 #Cleanup
 clean:
-	$(RM) *.o *.mod
+	$(RM) *.o *.mod eratos

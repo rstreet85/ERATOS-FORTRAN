@@ -2,41 +2,41 @@
 !@author    Robert Streetman
 !@date      2014-01-07 -Updated 2017-09-15
 !@desc      Implements Sieve of Eratosthenes to generate all primes below given integer, then returns the largest prime.
-!
-PROGRAM ERATOS
-IMPLICIT NONE
 
-INTEGER :: lim                                 !Limit of prime generation
-LOGICAL, ALLOCATABLE,DIMENSION(:) :: primes    !Array of booleans representing integers 0-limit
-INTEGER :: mid,mult,i,j                        !Utility counters/placeholders
+program eratos
+implicit none
 
-!Prompt user for limit
-PRINT *, 'Enter an integer n to find all primes 0 - n and return the largest: '
-READ *, lim
+integer :: lim                                 !limit of prime generation
+logical, allocatable,dimension(:) :: primes    !array of booleans representing integers 0-limit
+integer :: mid,mult,i,j                        !utility counters/placeholders
 
-ALLOCATE(primes(lim))
-primes(1:lim) = .TRUE.
+!prompt user for limit
+print *, 'enter an integer n to find all primes 0 - n and return the largest: '
+read *, lim
+
+allocate(primes(lim))
+primes(1:lim) = .true.
 mid = lim / 2
 
-!Generate primes
-DO i = 2,mid
-    IF (primes(i)) THEN
+!generate primes
+do i = 2,mid
+    if (primes(i)) then
         mult = lim / i
-        !If true, this candidate will not produce a prime
-        DO j = 2, mult
-            primes(i * j) = .FALSE.
-        END DO
-    END IF
-END DO
+        !if true, this candidate will not produce a prime
+        do j = 2, mult
+            primes(i * j) = .false.
+        end do
+    end if
+end do
 
-!Find first number still prime below lim
+!find first number still prime below lim
 i = lim
-DO WHILE (.NOT.primes(i))
+do while (.not.primes(i))
     i = i - 1
-ENDDO
+enddo
 
-DEALLOCATE(primes)
+deallocate(primes)
 
-PRINT *, 'Prime Found: ', i
+print *, 'prime found: ', i
 
-END PROGRAM ERATOS
+end program eratos
