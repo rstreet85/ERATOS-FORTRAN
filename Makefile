@@ -5,7 +5,7 @@ FCFLAGS = -g3 -fcheck=all -fbacktrace -Wall -Wextra -Wpedantic -Warray-bounds
 #FCFLAGS = -g -traceback -check all -debug extended
 
 #Optimization flags
-FCFLAGS += -O0
+FCFLAGS += -O3
 
 eratos: Eratos.f90
 	$(FC) $(FCFLAGS) -o $@ $^
