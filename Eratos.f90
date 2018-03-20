@@ -8,7 +8,7 @@ program eratos
 
   integer :: lim,argc
   integer,allocatable :: primes(:)   ! Fortran 2003 auto-allocation
-  character(16) :: argv  ! make it bigger if you want...
+  character(10) :: argv  ! recall int32 limit
   logical :: verbose=.false.
 
   argc = command_argument_count()
