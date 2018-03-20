@@ -12,11 +12,12 @@ program eratos
   logical :: verbose=.false.
 
   argc = command_argument_count()
-  if (argc==0) stop 'specify integer n to find all primes 0 - n and print the largest. -v to show all primes'
+  if (argc==0) stop 'specify positive integer n to find all primes 0 - n and print the largest. -v to show all primes'
 
   call get_command_argument(1,argv); read(argv,*) lim
-  if (argc > 1) call get_command_argument(2,argv); verbose= argv=='-v'
+  if (lim<=0) stop 'lim must be greater than zero'
 
+  if (argc > 1) call get_command_argument(2,argv); verbose= argv=='-v'
 
   primes = eratos_primes(lim)
 

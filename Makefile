@@ -1,11 +1,11 @@
-#
-# FC = gfortran
 
-#These flags are for development only
-#Flags:
+# gfortran
 FCFLAGS = -g3 -fcheck=all -fbacktrace -Wall -Wextra -Wpedantic -Warray-bounds
+# ifort
+#FCFLAGS = -g -traceback -check all -debug extended
+
 #Optimization flags
-FCFLAGS += -O3
+FCFLAGS += -O0
 
 eratos: Eratos.f90
 	$(FC) $(FCFLAGS) -o $@ $^
