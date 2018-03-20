@@ -2,41 +2,67 @@
 !@author    Robert Streetman
 !@date      2014-01-07 -Updated 2017-09-15
 !@desc      Implements Sieve of Eratosthenes to generate all primes below given integer, then returns the largest prime.
-!
-PROGRAM ERATOS
-IMPLICIT NONE
 
-INTEGER :: lim                                 !Limit of prime generation
-LOGICAL, ALLOCATABLE,DIMENSION(:) :: primes    !Array of booleans representing integers 0-limit
-INTEGER :: mid,mult,i,j                        !Utility counters/placeholders
+program eratos
+  implicit none
 
-!Prompt user for limit
-PRINT *, 'Enter an integer n to find all primes 0 - n and return the largest: '
-READ *, lim
+  integer :: lim,argc
+  integer,allocatable :: primes(:)   ! Fortran 2003 auto-allocation
+  character(10) :: argv  ! recall int32 limit
+  logical :: verbose=.false.
 
-ALLOCATE(primes(lim))
-primes(1:lim) = .TRUE.
-mid = lim / 2
+  argc = command_argument_count()
+  if (argc==0) stop 'specify positive integer n to find all primes 0 - n and print the largest. -v to show all primes'
 
-!Generate primes
-DO i = 2,mid
-    IF (primes(i)) THEN
-        mult = lim / i
-        !If true, this candidate will not produce a prime
-        DO j = 2, mult
-            primes(i * j) = .FALSE.
-        END DO
-    END IF
-END DO
+  call get_command_argument(1,argv); read(argv,*) lim
+  if (lim<=0) stop 'lim must be greater than zero'
 
-!Find first number still prime below lim
-i = lim
-DO WHILE (.NOT.primes(i))
-    i = i - 1
-ENDDO
+  if (argc > 1) call get_command_argument(2,argv); verbose= argv=='-v'
 
-DEALLOCATE(primes)
+  primes = eratos_primes(lim)
 
-PRINT *, 'Prime Found: ', i
+  if (verbose) print '(A,10000000I9)', 'all primes found: ',primes
+  print *, 'largest prime found: ', maxval(primes)
 
-END PROGRAM ERATOS
+contains
+
+pure function eratos_primes(lim)
+
+  integer, intent(in) :: lim
+  integer,allocatable :: eratos_primes(:)
+
+  integer :: mid,mult,i,j            !utility counters/placeholders
+  ! logical(1) gives ~ 4x memory savings and 40% speedup (gfortran: -O0 and -O3)
+  logical(1) :: primes(lim)    !array of booleans representing integers 0-limit
+
+  primes(:) = .true.
+  mid = lim / 2
+
+  !generate primes
+  do i = 2,mid
+      if (primes(i)) then
+          mult = lim / i
+          !if true, this candidate will not produce a prime
+          do concurrent (j = 2:mult)
+            primes(i * j) = .false.
+          end do
+      end if
+  end do
+
+  ! collect output
+  allocate(eratos_primes(count(primes)))
+
+! iterable way saves memory over one-liner pack() for large prime cases
+  j = 1
+  do concurrent (i=1:lim)
+    if (primes(i))  then
+      eratos_primes(j) = i
+      j = j+1
+    endif
+  enddo
+
+
+end function eratos_primes
+
+
+end program
